@@ -73,6 +73,7 @@
     this.value = this.$element.val() || this.$element.text();
     this.keyPressed = false;
     this.focused = this.$element.is( ":focus" );
+    this.selectOnNavigate = this.options.selectOnNavigate;
   };
 
   Typeahead.prototype = {
@@ -383,9 +384,12 @@
       }
 
       next.addClass('active');
+
       // added for screen reader
-      var newVal = this.updater(next.data('value'));
-      this.$element.val(this.displayText(newVal) || newVal);
+      if (this.selectOnNavigate) {
+        var newVal = this.updater(next.data('value'));
+        this.$element.val(this.displayText(newVal) || newVal);
+      }
     },
 
     prev: function (event) {
@@ -397,9 +401,12 @@
       }
 
       prev.addClass('active');
+
       // added for screen reader
-      var newVal = this.updater(prev.data('value'));
-      this.$element.val(this.displayText(newVal) || newVal);
+      if (this.selectOnNavigate) {
+        var newVal = this.updater(prev.data('value'));
+        this.$element.val(this.displayText(newVal) || newVal);
+      }
     },
 
     listen: function () {
@@ -553,7 +560,9 @@
 
     blur: function (e) {
       if (!this.mousedover && !this.mouseddown && this.shown) {
-        this.select();
+        if (this.selectOnNavigate) {
+          this.select();
+        }
         this.hide();
         this.focused = false;
         this.keyPressed = false;
@@ -651,7 +660,8 @@
     delay: 0,
     separator: 'category',
     headerHtml: '<li class="dropdown-header"></li>',
-    headerDivider: '<li class="divider" role="separator"></li>'
+    headerDivider: '<li class="divider" role="separator"></li>',
+    selectOnNavigate: false
   };
 
   $.fn.typeahead.Constructor = Typeahead;

@@ -297,7 +297,7 @@
       text = text.replace((/[\(\)\/\.\*\+\?\[\]]/g), function(mat) {
           return '\\' + mat;
       });
-      var reg = new RegExp(text, "g");
+      var reg = new RegExp(text, "gi");
       var m;
       for (i = 0; i < first.length; ++i) {
         m = first[i].match(reg);
